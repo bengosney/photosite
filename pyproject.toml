@@ -1,0 +1,46 @@
+[project]
+name = "New-Project"
+description = "Replace this with a description"
+version = "0.0.1"
+authors = [{name = "Ben Gosney", email = "bengosney@googlemail.com"}]
+dependencies = ["wagtail"]
+
+[project.optional-dependencies]
+dev = ["black", "mypy", "pip-tools", "pre-commit", "icecream"]
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools", "wheel"]
+
+[tool.black]
+line-length = 128
+target-version = ["py311"]
+
+[tool.flake8]
+exclude = ".git,*migrations*,node_modules,.history"
+extend-ignore = "E203"
+max-line-length = 128
+
+[tool.isort]
+default_section = "THIRDPARTY"
+ensure_newline_before_comments = "True"
+force_grid_wrap = 0
+import_heading_firstparty = "First Party"
+import_heading_future = "Future"
+import_heading_localfolder = "Locals"
+import_heading_stdlib = "Standard Library"
+import_heading_thirdparty = "Third Party"
+include_trailing_comma = "True"
+line_length = 128
+multi_line_output = 3
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+use_parentheses = "True"
+
+[tool.pycln]
+all = true
+
+[tool.pycodestyle]
+max_line_length = 128
+
+[tool.setuptools]
+license-files = ["LICENSE"]
