@@ -3,14 +3,17 @@ name = "New-Project"
 description = "Replace this with a description"
 version = "0.0.1"
 authors = [{name = "Ben Gosney", email = "bengosney@googlemail.com"}]
-dependencies = ["wagtail"]
+dependencies = ["wagtail", "google-api-python-client", "google-auth", "google_auth_oauthlib"]
 
 [project.optional-dependencies]
 dev = ["black", "mypy", "pip-tools", "pre-commit", "icecream"]
 
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "setuptools-scm"]
+
+[tool.setuptools.packages.find]
+where = ["."]
 
 [tool.black]
 line-length = 128
@@ -22,19 +25,23 @@ extend-ignore = "E203"
 max-line-length = 128
 
 [tool.isort]
-default_section = "THIRDPARTY"
-ensure_newline_before_comments = "True"
-force_grid_wrap = 0
-import_heading_firstparty = "First Party"
+known_django = "django"
+known_wagtail = "wagtail"
+known_first_party = "banners,fh_utils,pages,site_messages,stl"
+sections = "FUTURE,STDLIB,DJANGO,WAGTAIL,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
 import_heading_future = "Future"
-import_heading_localfolder = "Locals"
 import_heading_stdlib = "Standard Library"
+import_heading_django = "Django"
+import_heading_wagtail = "Wagtail"
 import_heading_thirdparty = "Third Party"
-include_trailing_comma = "True"
-line_length = 128
+import_heading_firstparty = "First Party"
+import_heading_localfolder = "Locals"
 multi_line_output = 3
-sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+include_trailing_comma = "True"
+force_grid_wrap = 0
 use_parentheses = "True"
+ensure_newline_before_comments = "True"
+line_length = 128
 
 [tool.pycln]
 all = true
@@ -44,3 +51,6 @@ max_line_length = 128
 
 [tool.setuptools]
 license-files = ["LICENSE"]
+
+[tool.mypy.plugins.django-stubs]
+django_settings_module = "stl.settings"
