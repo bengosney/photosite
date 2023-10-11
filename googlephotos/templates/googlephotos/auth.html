@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block content %}
+<p>Auth</p>
+<p>
+  <a href="{{ auth_url }}">Authenticate</a>
+  <pre>{{ redirect_uri }}</pre>
+</p>
+<code>{{ auth_url }}</code>
+<style>
+  code {
+    max-width: 95vw;
+    overflow: auto;
+    display: block;
+    padding: 0.5em 1em;
+  }
+</style>
+{% endblock %}

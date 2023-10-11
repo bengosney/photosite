@@ -1,20 +1,27 @@
 # Standard Library
 import json
-import os
-import pickle
 from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any, Self
 
+# Django
+from django.urls import reverse_lazy
+
 # Third Party
 import requests
+from google.auth.external_account_authorized_user import Credentials as eCreds
 from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import Flow, InstalledAppFlow
-from icecream import ic
+from google.oauth2.credentials import Credentials as Creds
+from google_auth_oauthlib.flow import Flow
+
+# Locals
+from .exceptions import RedirectException
 
 
 class GooglePhotosApi:
     _instance = None
+    _client = None
+    _credentials = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -29,37 +36,29 @@ class GooglePhotosApi:
         self.cred_pickle_file = f"./credentials/token_{self.api_name}_{self.api_version}.pickle"
         self.cred_json_file = f"./credentials/token_{self.api_name}_{self.api_version}.json"
 
-        self._credentials = None
+    @property
+    def client(self) -> Flow:
+        if self._client is None:
+            self._client = Flow.from_client_secrets_file(self.client_secret_file, self.scopes)
+        return self._client
 
-    def get_auth_url(self):
-        bob = Flow.from_client_secrets_file(self.client_secret_file, self.scopes)
-        return bob.authorization_url()
+    def get_auth_url(self, redirect_uri: str):
+        self.client.redirect_uri = redirect_uri
+        return self.client.authorization_url()
 
-    def to_json(self):
-        if os.path.exists(self.cred_pickle_file):
-            with open(self.cred_pickle_file, "rb") as token:
-                credentials = pickle.load(token)
-            ic(credentials.__dict__)
-            with open(self.cred_json_file, "w") as token:
-                token.write(json.dumps(credentials, indent=4))
+    def fetch_token(self, **kwargs):
+        token_data = self.client.fetch_token(**kwargs)
+        self._credentials = self.client.credentials
+        return token_data
 
     @property
-    def credentials(self):
-        # is checking if there is already a pickle file with relevant credentials
-        if os.path.exists(self.cred_pickle_file):
-            with open(self.cred_pickle_file, "rb") as token:
-                self._credentials = pickle.load(token)
-
-        # if there is no pickle file with stored credentials, create one using google_auth_oauthlib.flow
+    def credentials(self) -> Creds | eCreds:
         if not self._credentials or not self._credentials.valid:
             if self._credentials and self._credentials.expired and self._credentials.refresh_token:
                 self._credentials.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(self.client_secret_file, self.scopes)
-                self._credentials = flow.run_local_server(port=8000)
 
-            with open(self.cred_pickle_file, "wb") as token:
-                pickle.dump(self._credentials, token)
+        if self._credentials is None:
+            raise RedirectException(reverse_lazy("googlephotos:auth"))
 
         return self._credentials
 
@@ -81,7 +80,15 @@ class GooglePhotosApi:
             print("Request error", err)
             raise err
 
-        return response.json()
+        data = response.json()
+
+        try:
+            if data["error"]["code"] == 401:
+                raise RedirectException(reverse_lazy("googlephotos:auth"))
+        except KeyError:
+            pass
+
+        return data
 
 
 class ApiResponse:
@@ -147,11 +154,3 @@ class Album:
 
     def photos(self) -> Iterable[Photo]:
         return Photo.from_album(self)
-
-
-# for album in Album.all():
-#    ic(album.title)
-
-api = GooglePhotosApi()
-print(api.get_auth_url())
-api.to_json()
