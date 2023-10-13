@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 
 # Locals
 from .exceptions import RedirectException
+from .google import GooglePhotosApi
 
 
 class RedirectMiddleware:
@@ -15,4 +16,6 @@ class RedirectMiddleware:
 
     def process_exception(self, request, exception):
         if isinstance(exception, RedirectException):
+            api = GooglePhotosApi()
+            api.clear_session()
             return redirect(exception.url)

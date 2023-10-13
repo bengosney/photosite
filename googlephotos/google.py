@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 
 # Third Party
 import requests
+import requests_cache
 from google.auth.external_account_authorized_user import Credentials as eCreds
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials as Creds
@@ -24,6 +25,7 @@ class GooglePhotosApi:
     _instance = None
     _client = None
     _credentials = None
+    _session = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -37,6 +39,16 @@ class GooglePhotosApi:
         self.scopes = ["https://www.googleapis.com/auth/photoslibrary"]
         self.cred_pickle_file = f"./credentials/token_{self.api_name}_{self.api_version}.pickle"
         self.cred_json_file = f"./credentials/token_{self.api_name}_{self.api_version}.json"
+
+    @property
+    def session(self) -> requests.Session:
+        if self._session is None:
+            # self._session = requests.Session()
+            self._session = requests_cache.CachedSession()
+        return self._session
+
+    def clear_session(self):
+        self._session = None
 
     @property
     def client(self) -> Flow:
@@ -66,7 +78,7 @@ class GooglePhotosApi:
 
     def raw_request(self, url: str):
         headers = {"content-type": "application/json", "Authorization": f"Bearer {self.credentials.token}"}
-        return requests.request("GET", url, headers=headers)
+        return self.session.request("GET", url, headers=headers)
 
     def request(self, path: str, payload: dict | None = None, next: str | None = None):
         url = f"https://photoslibrary.googleapis.com/v1/{path}"
@@ -77,11 +89,11 @@ class GooglePhotosApi:
             if payload is None:
                 if next is not None:
                     url += f"?pageToken={next}"
-                response = requests.request("GET", url, headers=headers)
+                response = self.session.request("GET", url, headers=headers)
             else:
                 if next is not None:
                     payload["pageToken"] = next
-                response = requests.request("POST", url, data=json.dumps(payload), headers=headers)
+                response = self.session.request("POST", url, data=json.dumps(payload), headers=headers)
         except Exception as err:
             print("Request error", err)
             raise err

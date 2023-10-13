@@ -201,3 +201,5 @@ pyrightconfig.json
 .vscode
 key.json
 /media
+*.sqlite
+*.sqlite3
