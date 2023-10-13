@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load wagtailimages_tags %}
+
+ {% block content %}
+<p>Photos - {{ album.title }}<p>
+<ul>
+{% for photo in photos %}
+<li>
+    <img src="{{ photo.image.url }}" style="max-width: 80vw; height auto" alt="{{ photo.filename }}" lazy/>
+</li>
+{% endfor %}
+</ul>
+{% endblock %}

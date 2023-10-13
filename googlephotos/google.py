@@ -2,9 +2,11 @@
 import json
 from collections.abc import Iterable
 from dataclasses import dataclass
+from io import BytesIO
 from typing import Any, Self
 
 # Django
+from django.core import files
 from django.urls import reverse_lazy
 
 # Third Party
@@ -61,6 +63,10 @@ class GooglePhotosApi:
             raise RedirectException(reverse_lazy("googlephotos:auth"))
 
         return self._credentials
+
+    def raw_request(self, url: str):
+        headers = {"content-type": "application/json", "Authorization": f"Bearer {self.credentials.token}"}
+        return requests.request("GET", url, headers=headers)
 
     def request(self, path: str, payload: dict | None = None, next: str | None = None):
         url = f"https://photoslibrary.googleapis.com/v1/{path}"
@@ -125,7 +131,7 @@ class ApiResponse:
 
 
 @dataclass
-class Photo:
+class GooglePhoto:
     baseUrl: str
     filename: str
     id: str
@@ -134,16 +140,27 @@ class Photo:
     mediaMetadata: Any
 
     @classmethod
-    def from_album(cls, album: "str | Album") -> Iterable[Self]:
-        album_id = album.id if isinstance(album, Album) else album
+    def from_album(cls, album: "str | GoogleAlbum") -> Iterable[Self]:
+        album_id = album.id if isinstance(album, GoogleAlbum) else album
         return ApiResponse("mediaItems", "mediaItems:search", {"albumId": album_id}, cls)
+
+    def get_file(self, width: int, height: int):
+        api = GooglePhotosApi()
+        response = api.raw_request(f"{self.baseUrl}=w{width}-h{height}")
+        if response.status_code == requests.codes.ok:
+            fp = BytesIO()
+            fp.write(response.content)
+
+            return files.File(fp)
+
+        return None
 
 
 @dataclass
-class Album:
+class GoogleAlbum:
+    id: str
     coverPhotoBaseUrl: str
     coverPhotoMediaItemId: str
-    id: str
     mediaItemsCount: int
     productUrl: str
     title: str
@@ -152,5 +169,5 @@ class Album:
     def all(cls) -> Iterable[Self]:
         return ApiResponse("albums", "albums", None, cls)
 
-    def photos(self) -> Iterable[Photo]:
-        return Photo.from_album(self)
+    def photos(self) -> Iterable[GooglePhoto]:
+        return GooglePhoto.from_album(self)

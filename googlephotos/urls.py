@@ -7,7 +7,8 @@ from . import views
 
 app_name = "googlephotos"
 urlpatterns = [
-    path("", login_required(views.AlbumsView.as_view()), name="albums"),
+    path("albums", login_required(views.AlbumListView.as_view()), name="albums"),
+    path("albums/<slug:uid>", login_required(views.AlbumView.as_view()), name="album"),
     path("auth/", login_required(views.AuthView.as_view()), name="auth"),
     path("callback/", login_required(views.CallbackView.as_view()), name="callback"),
 ]

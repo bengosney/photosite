@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailuserbar %}
+{% load static wagtailcore_tags wagtailuserbar django_htmx %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,9 +29,12 @@
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
+
+        <script src="{% static 'js/htmx.min.js' %}" defer></script>
+        {% django_htmx_script %}
     </head>
 
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         {% wagtailuserbar %}
 
         {% block content %}{% endblock %}

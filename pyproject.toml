@@ -3,7 +3,15 @@ name = "New-Project"
 description = "Replace this with a description"
 version = "0.0.1"
 authors = [{name = "Ben Gosney", email = "bengosney@googlemail.com"}]
-dependencies = ["wagtail", "google-api-python-client", "google-auth", "google_auth_oauthlib", "cryptography","django-extensions"]
+dependencies = [
+    "wagtail",
+     "google-api-python-client",
+     "google-auth",
+     "google_auth_oauthlib",
+     "cryptography",
+     "django-extensions",
+     "django-htmx",
+     ]
 
 [project.optional-dependencies]
 dev = ["black", "mypy", "pip-tools", "pre-commit", "icecream"]

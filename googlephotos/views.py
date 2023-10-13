@@ -3,22 +3,59 @@ from datetime import datetime
 from typing import Any
 
 # Django
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import RedirectView, TemplateView
 
 # Locals
-from .google import Album, GooglePhotosApi
-from .models import Token
+from .google import GoogleAlbum as GoogleAlbum
+from .google import GooglePhoto as GooglePhoto
+from .google import GooglePhotosApi
+from .models import Album, Photo, Token
 
 
-class AlbumsView(TemplateView):
-    template_name = "googlephotos/albums.html"
+class AlbumView(TemplateView):
+    template_name = "googlephotos/album.html"
+
+    def update_photos(self, album: Album):
+        for photo in GooglePhoto.from_album(album.uid):
+            Photo.from_google_photo(photo, album)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["albums"] = Album.all()
+        album = Album.objects.get(uid=kwargs["uid"])
+
+        self.update_photos(album)
+
+        context["album"] = album
+        context["photos"] = Photo.objects.filter(album=album)
+        context["album_url"] = self.request.path
+
+        return context
+
+
+class AlbumListView(TemplateView):
+    template_name = "googlephotos/albums.html"
+
+    def update_albums(self):
+        for google_album in GoogleAlbum.all():
+            album, _ = Album.objects.update_or_create(
+                uid=google_album.id,
+                defaults={
+                    "cover_photo_base_url": google_album.coverPhotoBaseUrl,
+                    "cover_photo_media_item_id": google_album.coverPhotoMediaItemId,
+                    "media_items_count": google_album.mediaItemsCount,
+                    "product_url": google_album.productUrl,
+                    "title": google_album.title,
+                },
+            )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["albums"] = Album.objects.all()
+        context["albums_url"] = self.request.path
 
         return context
 
@@ -43,7 +80,8 @@ class CallbackView(TemplateView):
         token.token_type = token_data["token_type"]
         token.save()
 
-        return super().get(request, *args, **kwargs)
+        # return super().get(request, *args, **kwargs)
+        return HttpResponseRedirect(reverse("googlephotos:albums"))
 
 
 class AuthView(RedirectView):
