@@ -6,7 +6,7 @@ from io import BytesIO
 from typing import Any, Self
 
 # Django
-from django.core import files
+from django.core.files import File
 from django.urls import reverse_lazy
 
 # Third Party
@@ -156,16 +156,13 @@ class GooglePhoto:
         album_id = album.id if isinstance(album, GoogleAlbum) else album
         return ApiResponse("mediaItems", "mediaItems:search", {"albumId": album_id}, cls)
 
-    def get_file(self, width: int, height: int):
+    def get_file(self, width: int, height: int) -> File:
         api = GooglePhotosApi()
         response = api.raw_request(f"{self.baseUrl}=w{width}-h{height}")
         if response.status_code == requests.codes.ok:
-            fp = BytesIO()
-            fp.write(response.content)
+            return File(BytesIO(response.content), name=self.filename)
 
-            return files.File(fp)
-
-        return None
+        raise Exception(f"Error getting file: {response.status_code}")
 
 
 @dataclass

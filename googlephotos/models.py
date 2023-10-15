@@ -5,6 +5,11 @@ from typing import Self
 from django.db import models
 from django.urls import reverse_lazy
 
+# Wagtail
+from wagtail.fields import RichTextField
+from wagtail.images.models import Image
+from wagtail.models import Page
+
 # Third Party
 from google.auth.external_account_authorized_user import Credentials
 
@@ -55,7 +60,7 @@ class Photo(models.Model):
     product_url = models.CharField(max_length=255)
     media_metadata = models.CharField(max_length=255)
     album = models.ForeignKey(Album, on_delete=models.PROTECT, null=True)
-    image = models.ImageField(upload_to="googlephotos", null=True)
+    photo = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
         return f"{self.filename}"
@@ -65,7 +70,7 @@ class Photo(models.Model):
         return self.base_url
 
     @classmethod
-    def from_google_photo(cls, google_photo: GooglePhoto, album: Album | GoogleAlbum) -> Self:
+    def from_google_photo(cls, google_photo: GooglePhoto, album: Album | GoogleAlbum) -> tuple[Self, bool]:
         photo, created = cls.objects.update_or_create(
             uid=google_photo.id,
             defaults={
@@ -78,9 +83,23 @@ class Photo(models.Model):
             },
         )
 
-        if created or photo.image.name == "":
-            file = google_photo.get_file(2048, 1024)
-            if file is not None:
-                photo.image.save(photo.filename, file)
+        if created or photo.photo is None:
+            width = google_photo.mediaMetadata.get("width", 2048)
+            height = google_photo.mediaMetadata.get("height", 1024)
+            img_file = google_photo.get_file(width, height)
+            img = Image(
+                file=img_file,
+                title=photo.filename,
+                width=width,
+                height=height,
+            )
+            img.save()
+            photo.photo = img
+            photo.save()
+            created = True
 
-        return photo
+        return photo, created
+
+
+class AlbumPage(Page):
+    intro = RichTextField(blank=True)

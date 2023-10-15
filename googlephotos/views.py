@@ -18,8 +18,12 @@ class AlbumView(TemplateView):
     template_name = "googlephotos/album.html"
 
     def update_photos(self, album: Album):
+        i = 0
         for photo in GooglePhoto.from_album(album.uid):
-            Photo.from_google_photo(photo, album)
+            _, created = Photo.from_google_photo(photo, album)
+            i += int(created)
+            if i > 10:
+                break
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
