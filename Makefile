@@ -1,4 +1,4 @@
-.PHONY: help clean test install all init dev
+.PHONY: help clean test install all init dev css cog
 .DEFAULT_GOAL := install
 .PRECIOUS: requirements.%.in
 
@@ -10,6 +10,8 @@ PIP_PATH:=.direnv/python-$(PYTHON_VERSION)/bin/pip
 WHEEL_PATH:=.direnv/python-$(PYTHON_VERSION)/bin/wheel
 PIP_SYNC_PATH:=.direnv/python-$(PYTHON_VERSION)/bin/pip-sync
 PRE_COMMIT_PATH:=.direnv/python-$(PYTHON_VERSION)/bin/pre-commit
+
+COGABLE:=$(shell find ./photosite/assets/ -type f -exec grep -l "\[\[\[cog" {} \;)
 
 help: ## Display this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -76,3 +78,16 @@ clean: ## Remove all build files
 install: $(PIP_SYNC_PATH) requirements.txt $(REQS) ## Install development requirements (default)
 	@echo "Installing $(filter-out $<,$^)"
 	@python -m piptools sync requirements.txt $(REQS)
+
+photosite/static/css/%.css: photosite/assets/css/%.css $(wildcard photosite/assets/css/**/*.css)
+	@echo "Building $@"
+	@npx lightningcss --sourcemap --bundle --minify -o $@ $<
+
+css: $(patsubst photosite/assets/css/%.css,photosite/static/css/%.css,$(wildcard photosite/assets/css/*.css)) ## Build CSS files
+
+$(COGABLE): FORCE
+	@cog -c -r $@
+
+cog: $(COGABLE) ## Run cog on all cogable files
+
+FORCE:

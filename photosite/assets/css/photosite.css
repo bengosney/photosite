@@ -1,0 +1,11 @@
+/*[[[cog
+import cog
+from pathlib import Path
+
+cwd = Path(cog.inFile).parent
+for fn in cwd.glob('./partials/*.css'):
+    cog.outl(f"@import url('{fn.relative_to(cwd)}');")
+]]]*/
+@import url('partials/typography.css');
+@import url('partials/reset.css');
+/*[[[end]]] (checksum: 8c665247815d282899cff3b9fb0c961f)*/

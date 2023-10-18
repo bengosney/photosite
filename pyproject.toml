@@ -15,7 +15,7 @@ dependencies = [
      ]
 
 [project.optional-dependencies]
-dev = ["black", "mypy", "pip-tools", "pre-commit", "icecream"]
+dev = ["black", "mypy", "pip-tools", "pre-commit", "icecream", "cogapp"]
 
 [build-system]
 build-backend = "setuptools.build_meta"
