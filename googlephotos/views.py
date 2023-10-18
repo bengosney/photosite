@@ -22,7 +22,7 @@ class AlbumView(TemplateView):
         for photo in GooglePhoto.from_album(album.uid):
             _, created = Photo.from_google_photo(photo, album)
             i += int(created)
-            if i > 10:
+            if i > 5:
                 break
 
     def get_context_data(self, **kwargs):

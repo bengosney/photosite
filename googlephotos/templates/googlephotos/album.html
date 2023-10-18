@@ -7,8 +7,35 @@
 <ul>
 {% for photo in photos %}
 <li>
-    {% image photo.photo width-400 %}
+    {% image photo.photo max-400x300 %}
 </li>
 {% endfor %}
 </ul>
+
+<style>
+    ul {
+        list-style-type: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 1rem;
+        grid-auto-flow: dense;
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+    img {
+        display: block;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+        height: auto;
+    }
+</style>
 {% endblock %}

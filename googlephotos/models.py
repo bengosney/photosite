@@ -1,4 +1,5 @@
 # Standard Library
+from collections.abc import Iterable
 from typing import Self
 
 # Django
@@ -6,6 +7,7 @@ from django.db import models
 from django.urls import reverse_lazy
 
 # Wagtail
+from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images.models import Image
 from wagtail.models import Page
@@ -51,8 +53,13 @@ class Album(models.Model):
     def url(self):
         return reverse_lazy("googlephotos:album", kwargs={"uid": self.uid})
 
+    @property
+    def photos(self) -> Iterable["Photo"]:
+        return Photo.objects.filter(album=self)
+
 
 class Photo(models.Model):
+    show = models.BooleanField(default=True)
     uid = models.CharField(max_length=255)
     base_url = models.CharField(max_length=255)
     filename = models.CharField(max_length=255)
@@ -103,3 +110,8 @@ class Photo(models.Model):
 
 class AlbumPage(Page):
     intro = RichTextField(blank=True)
+    album = models.ForeignKey(Album, on_delete=models.PROTECT, blank=True, null=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("album"),
+    ]
