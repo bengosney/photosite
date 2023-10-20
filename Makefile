@@ -85,9 +85,19 @@ photosite/static/css/%.css: photosite/assets/css/%.css $(wildcard photosite/asse
 
 css: $(patsubst photosite/assets/css/%.css,photosite/static/css/%.css,$(wildcard photosite/assets/css/*.css)) ## Build CSS files
 
+FORCE:
+
 $(COGABLE): FORCE
 	@cog -c -r $@
 
 cog: $(COGABLE) ## Run cog on all cogable files
 
-FORCE:
+bs: ## Run browser-sync
+	browser-sync start --proxy localhost:8000 --files "./**/*.css" --files "./**/*.js" --files "./**/*.html"
+
+watch-%: photosite/assets/% ## Watch and build assets
+	@echo "Watching $* - $@ - $<"
+	@$(MAKE) $*
+	@while inotifywait -qr -e close_write $</; do \
+		$(MAKE) $*; \
+	done

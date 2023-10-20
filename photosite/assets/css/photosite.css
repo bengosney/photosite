@@ -3,9 +3,10 @@ import cog
 from pathlib import Path
 
 cwd = Path(cog.inFile).parent
-for fn in cwd.glob('./partials/*.css'):
+for fn in sorted(cwd.glob('./partials/*.css')):
     cog.outl(f"@import url('{fn.relative_to(cwd)}');")
 ]]]*/
-@import url('partials/typography.css');
-@import url('partials/reset.css');
-/*[[[end]]] (checksum: 8c665247815d282899cff3b9fb0c961f)*/
+@import url('partials/__reset.css');
+@import url('partials/_typography.css');
+@import url('partials/base.css');
+/*[[[end]]] (checksum: d2a287b2afe258f2cf521daa74b34322)*/
