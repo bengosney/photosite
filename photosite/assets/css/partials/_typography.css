@@ -18,6 +18,7 @@ body {
     "Segoe UI Symbol";
   font-weight: 400;
   line-height: 1.45;
+  line-height: clamp(1.1em, 0.702vw + 0.478em, 1.445em);
 }
 
 p,
@@ -40,9 +41,11 @@ h1,
 h2,
 h3,
 h4 {
-  margin: 1.414em 0 0.75em;
+  margin: 1.414rem 0 0.75rem;
+  margin: clamp(0.6rem, 1.848vw + 0.122rem, 1.6rem) 0 clamp(0.48rem, 1.33vw + 0.136rem, 1.2rem);
   font-weight: inherit;
-  line-height: 1.25;
+  line-height: 1.3em;
+  line-height: clamp(1.1em, 0.702vw + 0.478em, 1.3em);
 
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -50,20 +53,38 @@ h4 {
   hyphenate-limit-chars: 10 3 4;
 }
 
+div, p, section {
+  font-size: clamp(0.75rem, 0.462vw + 0.63rem, 1rem);
+}
+
 h1 {
   margin-top: 0;
+  font-size: 3.052rem;
+  font-size: clamp(2.289rem, 1.41vw + 1.924rem, 3.052rem);
 }
 
 h2 {
+  font-size: 2.441rem;
+  font-size: clamp(1.831rem, 1.128vw + 1.539rem, 2.441rem);
 }
 
 h3 {
+  font-size: 1.953rem;
+  font-size: clamp(1.465rem, 0.902vw + 1.231rem, 1.953rem);
 }
 
 h4 {
+  font-size: 1.563rem;
+  font-size: clamp(1.172rem, 0.722vw + 0.985rem, 1.563rem);
+}
+
+h5 {
+  font-size: 1.25rem;
+  font-size: clamp(0.938rem, 0.577vw + 0.788rem, 1.25rem);
 }
 
 small,
-.font_small {
-  font-size: 0.707em;
+.text_small {
+  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 0.37vw + 0.504rem, 0.8rem);
 }
