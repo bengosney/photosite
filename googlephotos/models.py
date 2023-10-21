@@ -1,10 +1,12 @@
 # Standard Library
+import json
 from collections.abc import Iterable
-from typing import Self
+from typing import Any, Self
 
 # Django
 from django.db import models
 from django.urls import reverse_lazy
+from django.utils import timezone
 
 # Wagtail
 from wagtail.admin.panels import FieldPanel
@@ -68,9 +70,21 @@ class Photo(models.Model):
     media_metadata = models.CharField(max_length=255)
     album = models.ForeignKey(Album, on_delete=models.PROTECT, null=True)
     photo = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
+    creation_time = models.DateTimeField()
+
+    _metadata = None
+
+    class Meta:
+        ordering = ["-creation_time"]
 
     def __str__(self) -> str:
         return f"{self.filename}"
+
+    @property
+    def metadata(self) -> dict[str, Any]:
+        if self._metadata is None:
+            self._metadata = json.loads(self.media_metadata)
+        return self._metadata
 
     @property
     def url(self):
@@ -78,6 +92,7 @@ class Photo(models.Model):
 
     @classmethod
     def from_google_photo(cls, google_photo: GooglePhoto, album: Album | GoogleAlbum) -> tuple[Self, bool]:
+        metadata = json.loads(google_photo.mediaMetadata.replace("'", '"'))
         photo, created = cls.objects.update_or_create(
             uid=google_photo.id,
             defaults={
@@ -87,6 +102,7 @@ class Photo(models.Model):
                 "product_url": google_photo.productUrl,
                 "media_metadata": google_photo.mediaMetadata,
                 "album": album,
+                "creationTime": metadata.get("creationTime", timezone.now()),
             },
         )
 

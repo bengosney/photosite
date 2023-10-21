@@ -7,6 +7,8 @@ for fn in sorted(cwd.glob('./partials/*.css')):
     cog.outl(f"@import url('{fn.relative_to(cwd)}');")
 ]]]*/
 @import url('partials/__reset.css');
+@import url('partials/__variables.css');
 @import url('partials/_typography.css');
+@import url('partials/album.css');
 @import url('partials/base.css');
-/*[[[end]]] (checksum: d2a287b2afe258f2cf521daa74b34322)*/
+/*[[[end]]] (checksum: 397481d5a82382c241443c433b85cac8)*/

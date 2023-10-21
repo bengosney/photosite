@@ -1,3 +1,5 @@
-html, body {
-    background: #343434;
+html,
+body {
+  background: var(--background-colour);
+  font-size: 100%;
 }

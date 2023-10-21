@@ -1,0 +1,17 @@
+.album {
+  padding: 0;
+  margin: 0;
+
+  display: grid;
+  gap: 1vw;
+  grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
+  grid-template-rows: masonry;
+
+  justify-content: center;
+
+  img {
+    max-width: 100%;
+    height: auto !important;
+    display: block;
+  }
+}
