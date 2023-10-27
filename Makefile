@@ -87,7 +87,8 @@ css: $(patsubst photosite/assets/css/%.css,photosite/static/css/%.css,$(wildcard
 
 photosite/static/js/%.js: photosite/assets/ts/%.ts $(wildcard photosite/assets/ts/%.ts)
 	@echo "Building $@"
-	@npx tsc -t es6 --outFile $@ $<
+	@echo npx tsc -t es6 --outFile $@ $<
+	npx swc -o $@ $<
 
 js: $(patsubst photosite/assets/ts/%.ts,photosite/static/js/%.js,$(wildcard photosite/assets/ts/*.ts)) ## Build JS files
 

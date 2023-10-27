@@ -17,7 +17,15 @@ dependencies = [
      ]
 
 [project.optional-dependencies]
-dev = ["black", "mypy", "pip-tools", "pre-commit", "icecream", "cogapp"]
+dev = [
+    "black",
+    "mypy",
+    "pip-tools",
+    "pre-commit",
+    "icecream",
+    "cogapp",
+    "django-debug-toolbar",
+]
 
 [build-system]
 build-backend = "setuptools.build_meta"
@@ -65,3 +73,6 @@ license-files = ["LICENSE"]
 
 [tool.mypy.plugins.django-stubs]
 django_settings_module = "stl.settings"
+
+[tool.djlint]
+profile="django"

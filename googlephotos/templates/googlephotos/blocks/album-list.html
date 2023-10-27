@@ -1,0 +1,7 @@
+<ul>
+    {% for album in value.albums %}
+        <li>
+            <a href="{{ album.url }}">{{ album.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

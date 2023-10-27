@@ -1,21 +1,26 @@
 .album-page {
   padding: 1vw;
-}
-
-.album {
-  padding: 0;
-  margin: 0;
-
-  display: grid;
-  gap: 1vw;
-  grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
-  grid-template-rows: masonry;
-
-  justify-content: center;
-
-  photo, img {
-    max-width: 100%;
-    height: auto !important;
+  & h1 {
     display: block;
+    text-align: right;
+  }
+
+  .album {
+    padding: 0;
+    margin: 0;
+
+    display: grid;
+    gap: 1vw;
+    grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
+    grid-template-rows: masonry;
+
+    justify-content: center;
+
+    photo,
+    img {
+      max-width: 100%;
+      height: auto !important;
+      display: block;
+    }
   }
 }
