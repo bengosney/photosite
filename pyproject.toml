@@ -12,6 +12,8 @@ dependencies = [
      "django-extensions",
      "django-htmx",
      "requests-cache",
+     "wagtail-picture-tag",
+     "willowavif",
      ]
 
 [project.optional-dependencies]

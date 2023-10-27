@@ -1,5 +1,6 @@
 {
   "devDependencies": {
-    "lightningcss-cli": "^1.22.0"
+    "lightningcss-cli": "^1.22.0",
+    "typescript": "^5.2.2"
   }
 }

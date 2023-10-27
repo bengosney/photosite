@@ -85,6 +85,12 @@ photosite/static/css/%.css: photosite/assets/css/%.css $(wildcard photosite/asse
 
 css: $(patsubst photosite/assets/css/%.css,photosite/static/css/%.css,$(wildcard photosite/assets/css/*.css)) ## Build CSS files
 
+photosite/static/js/%.js: photosite/assets/ts/%.ts $(wildcard photosite/assets/ts/%.ts)
+	@echo "Building $@"
+	@npx tsc -t es6 --outFile $@ $<
+
+js: $(patsubst photosite/assets/ts/%.ts,photosite/static/js/%.js,$(wildcard photosite/assets/ts/*.ts)) ## Build JS files
+
 FORCE:
 
 $(COGABLE): FORCE
@@ -93,7 +99,7 @@ $(COGABLE): FORCE
 cog: $(COGABLE) ## Run cog on all cogable files
 
 bs: ## Run browser-sync
-	browser-sync start --proxy localhost:8000 --files "./**/*.css" --files "./**/*.js" --files "./**/*.html"
+	browser-sync start --proxy localhost:8000 --files "photosite/static/css/*.css" --files "googlephotostemplatees/**/*.html"
 
 watch-%: photosite/assets/% ## Watch and build assets
 	@echo "Watching $* - $@ - $<"

@@ -1,50 +1,16 @@
 {% extends "base.html" %}
 
-{% load wagtailimages_tags %}
+{% load wagtailimages_tags wagtailcore_tags picture_tags static %}
 
 {% block content %}
-<h1>{{ page.album.title }}</h1>
-<div class="album masonry" data-max-width="300">
-    {% for photo in page.album.photos %}
-    {% image photo.photo width-300 %}
-    {% endfor %}
+<div class="album-page">
+	<h1>{{ page.album.title }}</h1>
+	<div class="album masonry smooth">
+		{% for photo in page.album.photos %}
+		{% picture photo.photo format-jpeg size-100vw width-300 width-600 width-900 lazy %}
+		{% endfor %}
+	</div>
 </div>
 
-<script>
-let grids = [...document.querySelectorAll('.masonry')];
-
-if(grids.length && getComputedStyle(grids[0]).gridTemplateRows !== 'masonry') {
-	grids = grids.map(grid => ({
-		_el: grid,
-		gap: parseFloat(getComputedStyle(grid).gridRowGap),
-		items: [...grid.childNodes].filter(c => c.nodeType === 1),
-		ncol: 0
-	}));
-
-	function layout() {
-		grids.forEach(grid => {
-			const ncol = getComputedStyle(grid._el).gridTemplateColumns.split(' ').length;
-
-			if(grid.ncol !== ncol) {
-				grid.ncol = ncol;
-				grid.items.forEach(c => c.style.removeProperty('margin-top'));
-
-				if(grid.ncol > 1) {
-					grid.items.slice(ncol).forEach((c, i) => {
-						const prev_fin = grid.items[i].getBoundingClientRect().bottom;
-						const curr_ini = c.getBoundingClientRect().top;
-
-						c.style.marginTop = `${prev_fin + grid.gap - curr_ini}px`;
-					});
-				}
-			}
-		});
-	}
-
-	addEventListener('load', e => {
-		layout();
-		addEventListener('resize', layout, false)
-	}, false);
-}
-</script>
+<script type="text/javascript" src="{% static 'js/masonry.js' %}"></script>
 {% endblock %}
