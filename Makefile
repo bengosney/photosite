@@ -1,4 +1,4 @@
-.PHONY: help clean test install all init dev css cog
+.PHONY: help clean test install all init dev css ts js cog
 .DEFAULT_GOAL := install
 .PRECIOUS: requirements.%.in
 
@@ -90,6 +90,8 @@ photosite/static/js/%.min.js: photosite/assets/ts/%.ts $(wildcard photosite/asse
 	@npx swc -o $@ $<
 
 js: $(patsubst photosite/assets/ts/%.ts,photosite/static/js/%.min.js,$(wildcard photosite/assets/ts/*.ts)) ## Build JS files
+
+ts: js
 
 FORCE:
 
