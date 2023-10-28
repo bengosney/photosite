@@ -3,14 +3,14 @@
 {% load wagtailimages_tags wagtailcore_tags picture_tags static %}
 
 {% block content %}
-<div class="album-page">
-	<h1>{{ page.album.title }}</h1>
-	<div class="album masonry smooth">
-		{% for photo in page.album.photos %}
-		{% picture photo.photo format-jpeg size-100vw width-300 width-600 width-900 lazy %}
-		{% endfor %}
-	</div>
-</div>
+    <div class="album-page">
+        <h1>{{ page.album.title }}</h1>
+        <div class="album masonry smooth">
+            {% for photo in page.album.photos %}
+                {% picture photo.photo format-jpeg size-100vw width-300 width-600 width-900 lazy %}
+            {% endfor %}
+        </div>
+    </div>
 
-<script type="text/javascript" src="{% static 'js/masonry.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/masonry.js' %}"></script>
 {% endblock %}
