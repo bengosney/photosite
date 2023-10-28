@@ -11,8 +11,8 @@
 
     display: grid;
     gap: 1vw;
-    grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
     grid-template-rows: masonry;
+    grid-template-columns: repeat(auto-fill, minmax(100vw, 1fr));
 
     justify-content: center;
 
@@ -24,3 +24,30 @@
     }
   }
 }
+/*[[[cog
+import cog
+size = 320
+max_cols = 6
+
+for i in range(1, max_cols):
+  cog.out(f"@media (min-width: {i * size}px)")
+  cog.outl("{ .album-page { .album {")
+  cog.outl(f"  grid-template-columns: repeat(auto-fill, minmax({((100//i) - 2) - (i - 1)}vw, 1fr));")
+  cog.outl("}}}")
+]]]*/
+@media (min-width: 320px){ .album-page { .album {
+  grid-template-columns: repeat(auto-fill, minmax(98vw, 1fr));
+}}}
+@media (min-width: 640px){ .album-page { .album {
+  grid-template-columns: repeat(auto-fill, minmax(47vw, 1fr));
+}}}
+@media (min-width: 960px){ .album-page { .album {
+  grid-template-columns: repeat(auto-fill, minmax(29vw, 1fr));
+}}}
+@media (min-width: 1280px){ .album-page { .album {
+  grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
+}}}
+@media (min-width: 1600px){ .album-page { .album {
+  grid-template-columns: repeat(auto-fill, minmax(14vw, 1fr));
+}}}
+/*[[[end]]] (checksum: a6f82bf2e4db47c21b7148dcf0943c6c)*/
