@@ -79,18 +79,17 @@ install: $(PIP_SYNC_PATH) requirements.txt $(REQS) ## Install development requir
 	@echo "Installing $(filter-out $<,$^)"
 	@python -m piptools sync requirements.txt $(REQS)
 
-photosite/static/css/%.css: photosite/assets/css/%.css $(wildcard photosite/assets/css/**/*.css)
+photosite/static/css/%.min.css: photosite/assets/css/%.css $(wildcard photosite/assets/css/**/*.css)
 	@echo "Building $@"
 	@npx lightningcss --sourcemap --bundle --minify -o $@ $<
 
-css: $(patsubst photosite/assets/css/%.css,photosite/static/css/%.css,$(wildcard photosite/assets/css/*.css)) ## Build CSS files
+css: $(patsubst photosite/assets/css/%.css,photosite/static/css/%.min.css,$(wildcard photosite/assets/css/*.css)) ## Build CSS files
 
-photosite/static/js/%.js: photosite/assets/ts/%.ts $(wildcard photosite/assets/ts/%.ts)
+photosite/static/js/%.min.js: photosite/assets/ts/%.ts $(wildcard photosite/assets/ts/%.ts)
 	@echo "Building $@"
-	@echo npx tsc -t es6 --outFile $@ $<
-	npx swc -o $@ $<
+	@npx swc -o $@ $<
 
-js: $(patsubst photosite/assets/ts/%.ts,photosite/static/js/%.js,$(wildcard photosite/assets/ts/*.ts)) ## Build JS files
+js: $(patsubst photosite/assets/ts/%.ts,photosite/static/js/%.min.js,$(wildcard photosite/assets/ts/*.ts)) ## Build JS files
 
 FORCE:
 
