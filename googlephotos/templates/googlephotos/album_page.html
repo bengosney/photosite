@@ -9,12 +9,12 @@
             {% for photo in page.album.photos %}
                 <div>
                     <label for="{{ photo.photo.title|slugify }}">
-                        {% picture photo.photo format-jpeg size-100vw width-300 width-600 width-900 lazy %}
+                        {% picture photo.photo format-jpeg size-100vw width-160 width-280 width-400 lazy %}
                     </label>
                     <div class="lightbox">
                         <input type="checkbox" id="{{ photo.photo.title|slugify }}" />
                         <label for="{{ photo.photo.title|slugify }}" class="box">
-                            {% picture photo.photo format-jpeg size-100vw width-900 lazy %}
+                            {% picture photo.photo format-jpeg size-100vw width-1024 width-2048 lazy %}
                         </label>
                     </div>
                 </div>
