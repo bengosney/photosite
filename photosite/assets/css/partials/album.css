@@ -1,5 +1,6 @@
 .album-page {
-  padding: 1vw;
+  --padding: clamp(0.75rem, 1vw, 1.25rem);
+  padding: var(--padding);
   & h1 {
     display: block;
     text-align: right;
@@ -10,9 +11,17 @@
     margin: 0;
 
     display: grid;
-    gap: 1vw;
+    gap: var(--padding);
     grid-template-rows: masonry;
-    grid-template-columns: repeat(auto-fill, minmax(100vw, 1fr));
+
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(clamp(
+        calc(160px - calc(var(--padding) * 1.5)),
+        calc(100vw / 6),
+        400px
+      ), 1fr)
+    );
 
     justify-content: center;
   }
@@ -24,37 +33,3 @@
     display: block;
   }
 }
-
-/*[[[cog
-import cog
-size = 250
-max_cols = 8
-
-for i in range(1, max_cols):
-  cog.out(f"@media (min-width: {i * size}px)")
-  cog.outl("{ .album-page { .album {")
-  cog.outl(f"  grid-template-columns: repeat(auto-fill, minmax({((100//i) - 2) - (i - 1)}vw, 1fr));")
-  cog.outl("}}}")
-]]]*/
-@media (min-width: 250px){ .album-page { .album {
-  grid-template-columns: repeat(auto-fill, minmax(98vw, 1fr));
-}}}
-@media (min-width: 500px){ .album-page { .album {
-  grid-template-columns: repeat(auto-fill, minmax(47vw, 1fr));
-}}}
-@media (min-width: 750px){ .album-page { .album {
-  grid-template-columns: repeat(auto-fill, minmax(29vw, 1fr));
-}}}
-@media (min-width: 1000px){ .album-page { .album {
-  grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
-}}}
-@media (min-width: 1250px){ .album-page { .album {
-  grid-template-columns: repeat(auto-fill, minmax(14vw, 1fr));
-}}}
-@media (min-width: 1500px){ .album-page { .album {
-  grid-template-columns: repeat(auto-fill, minmax(9vw, 1fr));
-}}}
-@media (min-width: 1750px){ .album-page { .album {
-  grid-template-columns: repeat(auto-fill, minmax(6vw, 1fr));
-}}}
-/*[[[end]]]*/
