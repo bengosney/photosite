@@ -15,19 +15,20 @@
     grid-template-columns: repeat(auto-fill, minmax(100vw, 1fr));
 
     justify-content: center;
+  }
 
-    photo,
-    img {
-      max-width: 100%;
-      height: auto !important;
-      display: block;
-    }
+  photo,
+  img {
+    max-width: 100%;
+    height: auto !important;
+    display: block;
   }
 }
+
 /*[[[cog
 import cog
-size = 320
-max_cols = 6
+size = 250
+max_cols = 8
 
 for i in range(1, max_cols):
   cog.out(f"@media (min-width: {i * size}px)")
@@ -35,19 +36,25 @@ for i in range(1, max_cols):
   cog.outl(f"  grid-template-columns: repeat(auto-fill, minmax({((100//i) - 2) - (i - 1)}vw, 1fr));")
   cog.outl("}}}")
 ]]]*/
-@media (min-width: 320px){ .album-page { .album {
+@media (min-width: 250px){ .album-page { .album {
   grid-template-columns: repeat(auto-fill, minmax(98vw, 1fr));
 }}}
-@media (min-width: 640px){ .album-page { .album {
+@media (min-width: 500px){ .album-page { .album {
   grid-template-columns: repeat(auto-fill, minmax(47vw, 1fr));
 }}}
-@media (min-width: 960px){ .album-page { .album {
+@media (min-width: 750px){ .album-page { .album {
   grid-template-columns: repeat(auto-fill, minmax(29vw, 1fr));
 }}}
-@media (min-width: 1280px){ .album-page { .album {
+@media (min-width: 1000px){ .album-page { .album {
   grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
 }}}
-@media (min-width: 1600px){ .album-page { .album {
+@media (min-width: 1250px){ .album-page { .album {
   grid-template-columns: repeat(auto-fill, minmax(14vw, 1fr));
 }}}
-/*[[[end]]] (checksum: a6f82bf2e4db47c21b7148dcf0943c6c)*/
+@media (min-width: 1500px){ .album-page { .album {
+  grid-template-columns: repeat(auto-fill, minmax(9vw, 1fr));
+}}}
+@media (min-width: 1750px){ .album-page { .album {
+  grid-template-columns: repeat(auto-fill, minmax(6vw, 1fr));
+}}}
+/*[[[end]]]*/

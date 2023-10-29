@@ -13,7 +13,7 @@ interface GridItem {
             gap: parseFloat(getComputedStyle(grid).rowGap),
             items: ([...grid.children] as HTMLElement[])
                 .filter(c => c.nodeType === 1)
-                .map(e => e.tagName === "PICTURE" ? e.querySelector<HTMLElement>("img") || e : e),
+                .map(e => e.querySelector<HTMLElement>("img") || e),
         }));
 
         function layout() {

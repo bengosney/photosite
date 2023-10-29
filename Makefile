@@ -96,7 +96,7 @@ ts: js
 FORCE:
 
 $(COGABLE): FORCE
-	@cog -c -r $@
+	@cog -r $@
 
 cog: $(COGABLE) ## Run cog on all cogable files
 

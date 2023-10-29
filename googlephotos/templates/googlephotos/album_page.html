@@ -7,7 +7,17 @@
         <h1>{{ page.album.title }}</h1>
         <div class="album masonry smooth">
             {% for photo in page.album.photos %}
-                {% picture photo.photo format-jpeg size-100vw width-300 width-600 width-900 lazy %}
+                <div>
+                    <label for="{{ photo.photo.title|slugify }}">
+                        {% picture photo.photo format-jpeg size-100vw width-300 width-600 width-900 lazy %}
+                    </label>
+                    <div class="lightbox">
+                        <input type="checkbox" id="{{ photo.photo.title|slugify }}" />
+                        <label for="{{ photo.photo.title|slugify }}" class="box">
+                            {% picture photo.photo format-jpeg size-100vw width-900 lazy %}
+                        </label>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>

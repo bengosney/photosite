@@ -1,2 +1,4 @@
-*.min.css
-*.min.js
+*.min.css binary
+*.css.map binary
+*.min.js binary
+*.js.map binary

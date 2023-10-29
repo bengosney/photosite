@@ -12,4 +12,5 @@ for fn in sorted(cwd.glob('./partials/*.css')):
 @import url('partials/album-list.css');
 @import url('partials/album.css');
 @import url('partials/base.css');
-/*[[[end]]] (checksum: 12074afc5d60ee1864f375f142cbc3c6)*/
+@import url('partials/lightbox.css');
+/*[[[end]]]*/
