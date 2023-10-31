@@ -82,6 +82,7 @@ install: $(PIP_SYNC_PATH) requirements.txt $(REQS) ## Install development requir
 photosite/static/css/%.min.css: photosite/assets/css/%.css $(wildcard photosite/assets/css/**/*.css)
 	@echo "Building $@"
 	@npx lightningcss --sourcemap --bundle --minify -o $@ $<
+	@sed -i 's/$(subst /,\/,$@)/\/css\/$(@F)/g' $@
 
 css: $(patsubst photosite/assets/css/%.css,photosite/static/css/%.min.css,$(wildcard photosite/assets/css/*.css)) ## Build CSS files
 
@@ -96,7 +97,7 @@ ts: js
 FORCE:
 
 $(COGABLE): FORCE
-	@cog -cr $@
+	@cog -cr $@ 2>&1 > /dev/null
 
 cog: $(COGABLE) ## Run cog on all cogable files
 
@@ -109,3 +110,7 @@ watch-%: photosite/assets/% ## Watch and build assets
 	@while inotifywait -qr -e close_write $</; do \
 		$(MAKE) $*; \
 	done
+
+static: $(wildcard photosite/static/**/*)
+	python manage.py collectstatic --noinput
+	@touch $@
