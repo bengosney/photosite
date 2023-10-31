@@ -25,6 +25,7 @@ dev = [
     "icecream",
     "cogapp",
     "django-debug-toolbar",
+    "wagtail-bakery",
 ]
 
 [build-system]

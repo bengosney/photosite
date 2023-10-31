@@ -8,6 +8,10 @@ anyascii==0.3.2 \
     --hash=sha256:3b3beef6fc43d9036d3b0529050b0c48bfad8bc960e9e562d7223cfb94fe45d4 \
     --hash=sha256:9d5d32ef844fe225b8bc7cba7f950534fae4da27a9bf3a6bea2cb0ea46ce4730
     # via wagtail
+appdirs==1.4.4 \
+    --hash=sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41 \
+    --hash=sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128
+    # via fs
 asgiref==3.7.2 \
     --hash=sha256:89b2ef2247e3b562a16eef663bc0e2e703ec6468e2fa8a5cd61cd449786d4f6e \
     --hash=sha256:9e0ce3aa93a819ba5b45120216b23878cf6e8525eb3848653452b4192b92afed
@@ -46,6 +50,16 @@ black==23.10.1 \
     --hash=sha256:e293e4c2f4a992b980032bbd62df07c1bcff82d6964d6c9496f2cd726e246ace \
     --hash=sha256:ec3f8e6234c4e46ff9e16d9ae96f4ef69fa328bb4ad08198c8cee45bb1f08c69
     # via New-Project (pyproject.toml)
+boto3==1.28.75 \
+    --hash=sha256:63d772a784e8e35ee51974eb1c20dff5faa51b007d22c5647783f18966bf4042 \
+    --hash=sha256:b959decd588982bc919bfcbebc7916926b05003a0093e7f2845362da4f5dd9fc
+    # via django-bakery
+botocore==1.31.75 \
+    --hash=sha256:d704ea9867b2227de0350bc2a5ca2543349e164ecb5d15edbfacbb05f2056482 \
+    --hash=sha256:fa078c4aa9a5777b3ede756540e62fec551e13d39cf7abf9a37bb81981496d68
+    # via
+    #   boto3
+    #   s3transfer
 build==1.0.3 \
     --hash=sha256:538aab1b64f9828977f84bc63ae570b060a8ed1be419e7870b8b4fc5e6ea553b \
     --hash=sha256:589bf99a67df7c9cf07ec0ac0e5e2ea5d4b37ac63301c4986d1acb126aa83f8f
@@ -273,6 +287,10 @@ django==4.2.6 \
     #   django-treebeard
     #   djangorestframework
     #   wagtail
+django-bakery==0.13.2 \
+    --hash=sha256:10e32f7fd312f5a98e927fb73b5fbcef749892be88a80434d4b7aa985e0b7507 \
+    --hash=sha256:89a55953dd87a0e2d7ce1b9e5477dde4e80aed21a78399b14674dbb13507b602
+    # via wagtail-bakery
 django-debug-toolbar==4.2.0 \
     --hash=sha256:af99128c06e8e794479e65ab62cc6c7d1e74e1c19beb44dcbf9bad7a9c017327 \
     --hash=sha256:bc7fdaafafcdedefcc67a4a5ad9dac96efd6e41db15bc74d402a54a2ba4854dc
@@ -329,6 +347,10 @@ filetype==1.2.0 \
     --hash=sha256:66b56cd6474bf41d8c54660347d37afcc3f7d1970648de365c102ef77548aadb \
     --hash=sha256:7ce71b6880181241cf7ac8697a2f1eb6a8bd9b429f7ad6d27b8db9ba5f1c2d25
     # via willow
+fs==2.4.16 \
+    --hash=sha256:660064febbccda264ae0b6bace80a8d1be9e089e0a5eb2427b7d517f9a91545c \
+    --hash=sha256:ae97c7d51213f4b70b6a958292530289090de3a7e15841e108fbe144f069d313
+    # via django-bakery
 google-api-core==2.12.0 \
     --hash=sha256:c22e01b1e3c4dcd90998494879612c38d0a3411d1f7b679eb89e2abe3ce1f553 \
     --hash=sha256:ec6054f7d64ad13b41e43d96f735acbd763b0f3b695dabaa2d579673f6a6e160
@@ -380,6 +402,12 @@ idna==3.4 \
     --hash=sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4 \
     --hash=sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2
     # via requests
+jmespath==1.0.1 \
+    --hash=sha256:02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980 \
+    --hash=sha256:90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe
+    # via
+    #   boto3
+    #   botocore
 l18n==2021.3 \
     --hash=sha256:1956e890d673d17135cc20913253c154f6bc1c00266c22b7d503cc1a5a42d848 \
     --hash=sha256:78495d1df95b6f7dcc694d1ba8994df709c463a1cbac1bf016e1b9a5ce7280b9
@@ -651,6 +679,10 @@ pyproject-hooks==1.0.0 \
     --hash=sha256:283c11acd6b928d2f6a7c73fa0d01cb2bdc5f07c57a2eeb6e83d5e56b97976f8 \
     --hash=sha256:f271b298b97f5955d53fb12b72c1fb1948c22c1a6b70b315c54cedaca0264ef5
     # via build
+python-dateutil==2.8.2 \
+    --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86 \
+    --hash=sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9
+    # via botocore
 pytz==2023.3.post1 \
     --hash=sha256:7b4fddbeb94a1eba4b557da24f19fdf9db575192544270a9101d8509f9f43d7b \
     --hash=sha256:ce42d816b81b68506614c11e8937d3aa9e41007ceb50bfdcb0749b921bf646c7
@@ -730,13 +762,20 @@ rsa==4.9 \
     --hash=sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7 \
     --hash=sha256:e38464a49c6c85d7f1351b0126661487a7e0a14a50f1675ec50eb34d4f20ef21
     # via google-auth
+s3transfer==0.7.0 \
+    --hash=sha256:10d6923c6359175f264811ef4bf6161a3156ce8e350e705396a7557d6293c33a \
+    --hash=sha256:fd3889a66f5fe17299fe75b82eae6cf722554edca744ca5d5fe308b104883d2e
+    # via boto3
 six==1.16.0 \
     --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 \
     --hash=sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254
     # via
     #   asttokens
+    #   django-bakery
+    #   fs
     #   html5lib
     #   l18n
+    #   python-dateutil
     #   url-normalize
 soupsieve==2.5 \
     --hash=sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690 \
@@ -768,6 +807,7 @@ urllib3==2.0.7 \
     --hash=sha256:c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84 \
     --hash=sha256:fdb6d215c776278489906c2f8916e6e7d4f5a9b602ccbcfdf7f016fc8da0596e
     # via
+    #   botocore
     #   requests
     #   requests-cache
 virtualenv==20.24.6 \
@@ -779,7 +819,11 @@ wagtail==5.1.3 \
     --hash=sha256:f4a6cc2adc40f687d8fb62fed2d4fc0804941dfa45b4624887f260dc6cf6b9f2
     # via
     #   New-Project (pyproject.toml)
+    #   wagtail-bakery
     #   wagtail-picture-tag
+wagtail-bakery==0.8.0 \
+    --hash=sha256:6ed7bfca032ef69daa51267ea820d4a9780620783559122684f92569c1467ebc
+    # via New-Project (pyproject.toml)
 wagtail-picture-tag==2.0.0 \
     --hash=sha256:5f9643437a21d7de5167ef5e6ce2dcd6a47595318035c07f1f2317f9e38ffa0d \
     --hash=sha256:c3fc70ec89ce9b57f6a7d1c2ef821ca68e7983026ff0783ec6d1875611cf45ac

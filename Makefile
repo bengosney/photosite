@@ -114,3 +114,6 @@ watch-%: photosite/assets/% ## Watch and build assets
 static: $(wildcard photosite/static/**/*)
 	python manage.py collectstatic --noinput
 	@touch $@
+
+build: FORCE
+	python manage.py build --settings "photosite.settings.static"
